@@ -945,6 +945,14 @@ class Qt_Fig(QtWidgets.QWidget):
         p = (self.geom.board_T.xMid(), self.margins.bottom)
         paint_text(painter, title, p, flags, (0, 5))
 
+        self.set_font_size(painter, 'template')
+        title = '{}x{}'.format(
+            self.geom.bit.units.increments_to_string(self.fig_width),
+            self.geom.bit.units.increments_to_string(self.fig_height, True)
+        )
+        paint_text(painter, title, (self.margins.left, self.fig_height),
+                   QtCore.Qt.AlignBaseline | QtCore.Qt.AlignLeft)
+
     def draw_finger_sizes(self, painter):
         '''
         Annotates the finger sizes on each board
