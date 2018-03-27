@@ -531,7 +531,7 @@ class Config_Window(QtWidgets.QDialog):
         self.le_min_image = QtWidgets.QLineEdit(w)
         self.le_min_image.setFixedWidth(self.line_edit_width)
         self.le_min_image.editingFinished.connect(self._on_min_image)
-        tt = self.transl.tr('On save image, minimum width of image.')
+        tt = self.transl.tr('On save image, minimum width of image or 0 for resolution.')
         grid = form_line(self.le_min_image_label, self.le_min_image, tt)
         vbox.addLayout(grid)
 
@@ -539,7 +539,7 @@ class Config_Window(QtWidgets.QDialog):
         self.le_max_image = QtWidgets.QLineEdit(w)
         self.le_max_image.setFixedWidth(self.line_edit_width)
         self.le_max_image.editingFinished.connect(self._on_max_image)
-        tt = self.transl.tr('On save image, maximum width of image.')
+        tt = self.transl.tr('On save image, maximum width of image or resolution.')
         grid = form_line(self.le_max_image_label, self.le_max_image, tt)
         vbox.addLayout(grid)
 
@@ -1010,13 +1010,20 @@ class Config_Window(QtWidgets.QDialog):
             ok = True
             try:
                 new_value = int(s)
-                if new_value <= 0:
+                if new_value < 0:
                     ok = False
             except:
                 ok = False
             if ok:
                 self.new_config['min_image_width'] = int(s)
                 self.update_state('min_image_width')
+
+                if int(s) > 0:
+                    self.le_min_image_label = QtWidgets.QLabel(self.transl.tr('Min Image Width (pixels):'))
+                    self.le_max_image_label.setText(self.transl.tr('Max Image Width (pixels):'))
+                else:
+                    self.le_min_image_label = QtWidgets.QLabel(self.transl.tr('DPI mode (0):'))
+                    self.le_max_image_label.setText(self.transl.tr('Image resolution (ppi):'))
             else:
                 msg = self.transl.tr('Unable to set Min Image Width to: {}<p>'\
                       'Set to a positive integer.').format(s)

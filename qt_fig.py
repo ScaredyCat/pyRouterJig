@@ -256,16 +256,20 @@ class Qt_Fig(QtWidgets.QWidget):
                                           self.config)
         self.set_colors(True)
 
-        s = self.size()
-        window_ar = float(s.width()) / s.height()
-        fig_ar = float(self.fig_width) / self.fig_height
-        if window_ar < fig_ar:
-            w = s.width()
+        if self.config.min_image_width == 0:
+            sNew = QtCore.QSize(bit.units.increments_to_inches(self.fig_width) * self.config.max_image_width,
+                                bit.units.increments_to_inches(self.fig_height) * self.config.max_image_width)
         else:
-            w = int(s.height() * fig_ar)
-        w = max(self.config.min_image_width, min(self.config.max_image_width, w))
-        h = utils.my_round(w / fig_ar)
-        sNew = QtCore.QSize(w, h)
+            s = self.size()
+            window_ar = float(s.width()) / s.height()
+            fig_ar = float(self.fig_width) / self.fig_height
+            if window_ar < fig_ar:
+                w = s.width()
+            else:
+                w = int(s.height() * fig_ar)
+            w = max(self.config.min_image_width, min(self.config.max_image_width, w))
+            h = utils.my_round(w / fig_ar)
+            sNew = QtCore.QSize(w, h)
 
         im = QtGui.QImage(sNew, QtGui.QImage.Format_RGB32)
         painter = QtGui.QPainter()

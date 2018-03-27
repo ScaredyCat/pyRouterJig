@@ -1413,8 +1413,8 @@ Center: </source>
     </message>
     <message>
         <location filename="../qt_config.py" line="468"/>
-        <source>On save image, minimum width of image.</source>
-        <translation>Схранение. Наименьшая ширина изоражения.</translation>
+        <source>On save image, minimum width of image or 0 for resolution.</source>
+        <translation>Схранение. Наименьшая ширина изоражения. 0 для ввода разрешения</translation>
     </message>
     <message>
         <location filename="../qt_config.py" line="472"/>
@@ -1422,9 +1422,19 @@ Center: </source>
         <translation>Наибольшая ширина изображения (в пикселах):</translation>
     </message>
     <message>
+        <location filename="../qt_config.py" line="1025"/>
+        <source>DPI mode (0):</source>
+        <translation>Размер через DPI (0):</translation>
+    </message>
+    <message>
+        <location filename="../qt_config.py" line="1022"/>
+        <source>Image resolution (ppi):</source>
+        <translation>Разрешение изображения (ppi):</translation>
+    </message>
+    <message>
         <location filename="../qt_config.py" line="476"/>
-        <source>On save image, maximum width of image.</source>
-        <translation>Схранение. Наибольшая ширина изоражения.</translation>
+        <source>On save image, maximum width of image or resolution.</source>
+        <translation>Схранение. Наибольшая ширина изоражения или разрешение ppi.</translation>
     </message>
     <message>
         <location filename="../qt_config.py" line="489"/>
