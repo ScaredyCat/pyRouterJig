@@ -104,6 +104,7 @@ class Qt_Fig(QtWidgets.QWidget):
         self.font_size = {'title': 4,
                           'fingers': 3,
                           'template': 3,
+                          'wm_mark': 3.5,
                           'boards': 4,
                           'template_labels': 3,
                           'watermark': 4}
@@ -493,7 +494,13 @@ class Qt_Fig(QtWidgets.QWidget):
         bg_pen.setColor(QtGui.QColor('White'))
         bg_pen.setWidthF(0)
 
+        self.set_font_size(painter, 'wm_mark')
+        mrk_font = painter.font()
+        mrk_font.setBold(True)
+        x1 = painter.fontMetrics().height()
+
         self.set_font_size(painter, 'template')
+        lbl_font = painter.font()
         label = 'ALIGN'
         flags = QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter
         for b in [board_T, board_TDD, board_caul]:
@@ -503,9 +510,14 @@ class Qt_Fig(QtWidgets.QWidget):
                 painter.setPen(pen)
                 painter.drawLine(x, y1, x, y2)
                 paint_text(painter, label, (x, (y1 + y2) // 2), flags, (0, 0), -90)
+                if self.description is not None:
+                    painter.setFont(mrk_font)
+                    paint_text(painter, self.description, (x, (y1 + y2) // 2), flags, (x1, 0), -90)
+                    painter.setFont(lbl_font)
                 painter.setPen(bg_pen)
                 painter.drawLine(QtCore.QPointF(x-0.5, y1+0.5), QtCore.QPointF(x-0.5, y2-0.5))
                 painter.drawLine(QtCore.QPointF(x+0.5, y1+0.5), QtCore.QPointF(x+0.5, y2-0.5))
+
 
     def draw_template_rectangle(self, painter, r, b):
         '''

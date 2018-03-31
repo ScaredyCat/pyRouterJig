@@ -1410,7 +1410,7 @@ class Driver(QtWidgets.QMainWindow):
                                    self.woods, self.description)
 
         s = serialize.serialize(self.bit, self.boards, self.spacing,
-                                self.config)
+                                self.config, self.description)
 
         # we use UUEC encoding so need more attributes in the image file
         # QT5 does not work propertly with PNG text; use PIL as workaround
@@ -1504,7 +1504,7 @@ class Driver(QtWidgets.QMainWindow):
             return
 
         # backwards compatibility
-        (bit, boards, sp, sp_type) = \
+        (bit, boards, sp, sp_type, description) = \
             serialize.unserialize(s, self.config, ('pyRouterJig_v' in image.info.keys()),
                                   self.transl)
 
@@ -1525,6 +1525,7 @@ class Driver(QtWidgets.QMainWindow):
         self.units = self.bit.units
         self.doc = doc.Doc(self.units)
         self.template = router.Incra_Template(self.units, self.boards)
+        self.description = description
 
         # ... set the wood selection for each board.  If the wood does not
         # exist, set to a wood we know exists.  This can happen if the wood
@@ -1579,6 +1580,7 @@ class Driver(QtWidgets.QMainWindow):
         self.le_bit_width.setText(self.units.increments_to_string(self.bit.width))
         self.le_bit_depth.setText(self.units.increments_to_string(self.bit.depth))
         self.le_bit_angle.setText(str(self.bit.angle))
+        self.le_description.setText(self.description)
         self.set_spacing_widgets()
 
         self.draw()
