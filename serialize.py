@@ -58,7 +58,7 @@ def serialize(bit, boards, sp, config, description):
         p.dump(b.active)
         p.dump(b.dheight)
     # Save the spacing
-    sp_type = sp.description[0:4]
+    sp_type = sp.__class__.__name__[0:4]
     if config.debug:
         print('serialize', sp_type)
     p.dump(sp_type)
