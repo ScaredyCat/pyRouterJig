@@ -1411,13 +1411,19 @@ class Driver(QtWidgets.QMainWindow):
                 self.status_message(self.transl.tr('File not saved'), warning=True)
                 return
 
+        dpiX = 300
+        dpiY = 300
         # Save the file with metadata
         if do_screenshot:
             p_screen = QtWidgets.QApplication.primaryScreen()
+            dpiX = p_screen.logicalDotsPerInchX()
+            dpiY = p_screen.logicalDotsPerInchY()
             image = p_screen.grabWindow(self.winId())
         else:
             image = self.fig.image(self.template, self.boards, self.bit, self.spacing,
                                    self.woods, self.description)
+            dpiY = self.fig.dpi
+            dpiX = self.fig.dpi
 
         s = serialize.serialize(self.bit, self.boards, self.spacing,
                                 self.config, self.description)
@@ -1458,7 +1464,7 @@ class Driver(QtWidgets.QMainWindow):
 
         r = True
         try:
-            pilimg.save(filename, 'png', pnginfo=info )
+            pilimg.save(filename, 'png', pnginfo=info, dpi=(dpiX, dpiY) )
         except OSError:
             r = False
 

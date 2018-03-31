@@ -99,6 +99,7 @@ class Qt_Fig(QtWidgets.QWidget):
         self.window_height = -1
         self.set_fig_dimensions(template, boards)
         self.geom = None
+        self.dpi = 300
         self.labels = ['B', 'C', 'D', 'E', 'F']
         # font sizes are in 1/32" of an inch
         self.font_size = {'title': 4,
@@ -258,6 +259,7 @@ class Qt_Fig(QtWidgets.QWidget):
         self.set_colors(True)
 
         if self.config.min_image_width == 0:
+            self.dpi = self.config.max_image_width
             sNew = QtCore.QSize(bit.units.increments_to_inches(self.fig_width) * self.config.max_image_width,
                                 bit.units.increments_to_inches(self.fig_height) * self.config.max_image_width)
         else:
@@ -271,6 +273,7 @@ class Qt_Fig(QtWidgets.QWidget):
             w = max(self.config.min_image_width, min(self.config.max_image_width, w))
             h = utils.my_round(w / fig_ar)
             sNew = QtCore.QSize(w, h)
+            self.dpi = w / bit.units.increments_to_inches(self.fig_width)
 
         im = QtGui.QImage(sNew, QtGui.QImage.Format_RGB32)
         painter = QtGui.QPainter()
