@@ -861,8 +861,8 @@ def create_title(boards, bit, spacing):
 
     if bit.angle > 0 and\
             (abs(gap) > quant or\
-             gap > spacing.config.warn_gap or\
-             gap < (-1 * spacing.config.warn_overlap)):
+             gap > D(spacing.config.warn_gap) or\
+             gap < (-1 * D(spacing.config.warn_overlap))):
         title += units.transl.tr('\x7c%s') % gap
         title += units.transl.tr(' (%s)') % units.increments_to_string(bit.depth_0, True)
     return title
