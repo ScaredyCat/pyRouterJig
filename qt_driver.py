@@ -131,6 +131,8 @@ class Driver(QtWidgets.QMainWindow):
         # menus, such as show_caul, the config window keeps track whether any such
         # changes have occurred, in order to enable its Save button.
         self.config_window = qt_config.Config_Window(self.config, self.units, self)
+        (self.working_dir, fname) = os.path.split(os.path.splitext(self.config.last_path)[0])
+        self.prefix = fname.rstrip('0123456789')
 
         # ... show the status message from reading the configuration file
         self.status_message(msg)
@@ -1362,7 +1364,7 @@ class Driver(QtWidgets.QMainWindow):
             print('_on_save')
 
         # Form the default filename prefix
-        prefix = 'pyrouterjig'
+        prefix = self.prefix # was 'pyrouterjig'
         suffix = 'png'
         if self.screenshot_index is None:
             self.screenshot_index = utils.get_file_index(self.working_dir, prefix, suffix)
@@ -1390,18 +1392,26 @@ class Driver(QtWidgets.QMainWindow):
             filename = None
             if dialog.exec_():
                 filenames = dialog.selectedFiles()
-                d = str(dialog.directory().path())
-                # force recomputation of index, next time around, if path changed
-                if d != self.working_dir:
-                    self.screenshot_index = None
-                self.working_dir = d
-                filename = str(filenames[0]).strip()
+
+                # Save updated config if path or base name changed
+                self.config.last_path = str(filenames[0])
+                (working_dir, fname) = os.path.split(os.path.splitext(self.config.last_path)[0])
+                prefix = fname.rstrip('0123456789')
+
+                if working_dir != self.working_dir or prefix != self.prefix:
+                    self.working_dir = working_dir
+                    self.prefix = prefix
+                    #Save the last path and file name
+                    c = config_file.Configuration()
+                    c.write_config(self.config.__dict__.copy())
+
+                filename = self.config.last_path.strip()
+
             if filename is None:
                 self.status_message(self.transl.tr('File not saved'), warning=True)
                 return
 
         # Save the file with metadata
-
         if do_screenshot:
             p_screen = QtWidgets.QApplication.primaryScreen()
             image = p_screen.grabWindow(self.winId())
