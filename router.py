@@ -170,6 +170,11 @@ class Router_Bit(object):
               'Set to a positive value, such as: {}').format(s, val)
         try:
             depth = self.units.string_to_increments(s, False)
+            if self.angle > 0 and round( (self.width / 3.5 ) / math.tan(math.radians(self.angle)) <= depth) :
+                val = round((self.width / 3.5 ) / math.tan(math.radians(self.angle)))
+                msg = self.transl.tr('Unable to set Bit Depth to: {}<p>'\
+                                     'The maximum depth of cut is not more than: {}').format(s, val)
+                raise ValueError()
         except:
             raise Router_Exception(msg)
         if depth <= 0:
@@ -208,7 +213,7 @@ class Router_Bit(object):
         self.gap = D('0')
 
         if self.angle > 0:
-            tan = D(math.tan(self.angle * math.pi / 180))
+            tan = D(math.tan(math.radians(self.angle)))
             offset = D(self.depth) * tan
             self.midline = self.width_f - offset
             midline = self.midline.to_integral_value(rounding=ROUND_HALF_DOWN)
