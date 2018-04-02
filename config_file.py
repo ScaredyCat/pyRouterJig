@@ -226,7 +226,7 @@ debug = {debug}
 # common default values.  The canvas, board, and template colors from
 # http://paletton.com/#uid=50F0u0kllllaFw0g0qFqFg0-obq
 COMMON_VALS = {'version': 'NONE',
-               'last_path': '\\pyrouterjig.png',
+               'last_path': 'pyrouterjig.png',
                'english_separator': ' ',
                'language': 'en_US',
                'show_finger_widths': False,
