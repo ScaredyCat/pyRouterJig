@@ -219,6 +219,7 @@ class Driver(QtWidgets.QMainWindow):
             # The config file exists and is current
             msg = self.transl.tr('Read configuration file %s') % c.filename
 
+        self.setWindowTitle('pyRouterJig ' + c.config.version)
         return (c.config, msg)
 
     def center(self):
@@ -1135,6 +1136,25 @@ class Driver(QtWidgets.QMainWindow):
 
         self.update_tooltips()
 
+    def update_config_path(self, filename):
+        '''
+        Update config file with the last saved or opened file name
+        passed in params.
+        '''
+        self.config.last_path = str(filename)
+        (working_dir, fname) = os.path.split(os.path.splitext(self.config.last_path)[0])
+        prefix = fname.rstrip('0123456789')
+
+        if working_dir != self.working_dir or prefix != self.prefix:
+            self.working_dir = working_dir
+            self.prefix = prefix
+            # Save the last path and file name
+            c = config_file.Configuration()
+            c.write_config(self.config.__dict__.copy())
+            self.file_saved = True
+
+        self.setWindowTitle(filename + ' \u2014 pyRouterJig')
+
     @QtCore.pyqtSlot(int)
     def _on_tabs_spacing(self, index):
         '''Handles changes to spacing algorithm'''
@@ -1394,17 +1414,7 @@ class Driver(QtWidgets.QMainWindow):
                 filenames = dialog.selectedFiles()
 
                 # Save updated config if path or base name changed
-                self.config.last_path = str(filenames[0])
-                (working_dir, fname) = os.path.split(os.path.splitext(self.config.last_path)[0])
-                prefix = fname.rstrip('0123456789')
-
-                if working_dir != self.working_dir or prefix != self.prefix:
-                    self.working_dir = working_dir
-                    self.prefix = prefix
-                    #Save the last path and file name
-                    c = config_file.Configuration()
-                    c.write_config(self.config.__dict__.copy())
-
+                self.update_config_path(filenames[0])
                 filename = self.config.last_path.strip()
 
             if filename is None:
@@ -1472,7 +1482,6 @@ class Driver(QtWidgets.QMainWindow):
             self.status_message(self.transl.tr('Saved to file %s') % filename)
             if self.screenshot_index is not None:
                 self.screenshot_index += 1
-            self.file_saved = True
         else:
             self.status_message(self.transl.tr('Unable to save to file %s') % filename,
                                 warning=True)
@@ -1600,6 +1609,9 @@ class Driver(QtWidgets.QMainWindow):
         self.set_spacing_widgets()
 
         self.draw()
+
+        # Mark "no changes", save path, and set window title
+        self.update_config_path(filename)
 
     def threeDS_enabler(self):
         '''
@@ -1759,7 +1771,8 @@ class Driver(QtWidgets.QMainWindow):
         if self.config.debug:
             print('_on_doclink')
 
-        webbrowser.open('http://lowrie.github.io/pyRouterJig/documentation.html')
+        # webbrowser.open('http://lowrie.github.io/pyRouterJig/documentation.html')
+        webbrowser.open('http://lowrie.github.io/pyRouterJig/overview/')
 
     def _on_wood(self, iwood, index=None, reinit=False):
         '''Handles all changes in wood'''

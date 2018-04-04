@@ -139,7 +139,7 @@
     <message>
         <location filename="../qt_driver.py" line="1495"/>
         <source>&lt;font size=5 color=red&gt;Welcome to &lt;i&gt;pyRouterJig&lt;/i&gt; !&lt;/font&gt;</source>
-        <translation>&lt;font size=5 color=red&gt;Вас приветствует&lt;i&gt;pyRouterJig&lt;/i&gt; !&lt;/font&gt;</translation>
+        <translation>&lt;font size=5 color=red&gt;Вас приветствует &lt;i&gt;pyRouterJig&lt;/i&gt; !&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../qt_driver.py" line="1499"/>
