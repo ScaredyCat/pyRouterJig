@@ -578,8 +578,9 @@ class Driver(QtWidgets.QMainWindow):
         self.update_cb_vsfingers(p.vMin, p.vMax, p.v)
 
         p = params['Spacing']
-        self.vs_slider0_label = QtWidgets.QLabel(labels[1], self.main_frame) # labels[1]
+        self.vs_slider0_label = QtWidgets.QLabel(self.transl.tr('Spacing...'), self.main_frame) # labels[1]
         self.vs_slider0 = QtWidgets.QSlider(QtCore.Qt.Horizontal, self.main_frame)
+        self.vs_slider0.setToolTip(self.transl.tr('Set fingers disstance'))
         self.vs_slider0.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.vs_slider0.setMinimum(p.vMin)
         self.vs_slider0.setMaximum(p.vMax)
@@ -600,7 +601,8 @@ class Driver(QtWidgets.QMainWindow):
 
         # ...check box for centering
         p = params['Inverted']
-        self.cb_vs_inverted = QtWidgets.QCheckBox(labels[2], self.main_frame) # labels[2]
+        self.cb_vs_inverted = QtWidgets.QCheckBox(self.transl.tr('Inverted'), self.main_frame) # labels[2]
+        self.cb_vs_inverted.setToolTip(self.transl.tr('Inverce pattern'))
         self.cb_vs_inverted.setChecked(p.v)
         self.cb_vs_inverted.stateChanged.connect(self._cb_vs_inverted)
 
@@ -1124,7 +1126,7 @@ class Driver(QtWidgets.QMainWindow):
             self.update_cb_vsfingers(p.vMin, p.vMax, p.v)
             self.cb_vsfingers.blockSignals(False)
             self.var_spacing.set_cuts()
-            self.cb_vsfingers_label.setText(self.transl.tr(self.var_spacing.labels[0]))
+            self.cb_vsfingers_label.setText(self.transl.tr("Fingers")) #self.transl.tr(self.var_spacing.labels[0])
             self.spacing = self.var_spacing
         elif self.spacing_index == self.edit_spacing_id:
             # Edit spacing parameters.  Currently, this has no parameters, and

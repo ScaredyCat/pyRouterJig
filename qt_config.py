@@ -143,6 +143,8 @@ class Config_Window(QtWidgets.QDialog):
         self.units = units
         self.transl = units.transl
 
+        self.setWindowTitle(self.transl.tr('Settings'))
+
         # Form these objects so that we can do error checking on their changes
         bit_width = self.units.abstract_to_increments(self.config.bit_width)
         bit_depth = self.units.abstract_to_increments(self.config.bit_depth, False)
